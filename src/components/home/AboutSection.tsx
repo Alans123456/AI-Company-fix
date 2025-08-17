@@ -1,71 +1,304 @@
-import { CheckCircle, Users, Award, Clock } from "lucide-react"
+import React, { useState, useEffect } from "react";
+import {
+  BrainCircuit,
+  Cpu,
+  ShieldCheck,
+  Rocket,
+  Sparkles,
+  Zap,
+  LucideIcon,
+} from "lucide-react";
 
-export function AboutSection() {
+// Animated Background Component
+const AnimatedBackground = () => {
   return (
-    <section className="py-20 bg-white dark:bg-slate-800">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
-                Building the Future of{" "}
-                <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  Digital Innovation
+    <div className="absolute inset-0 overflow-hidden bg-transparent">
+      {/* Base dark background */}
+      <div className="absolute inset-0 bg-transparent blur-3xl"></div>
+
+      {/* Main dramatic light beam from right */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-blue-400/30 via-blue-500/10 via-slate-400/5 to-transparent opacity-80 transform rotate-12 scale-150"></div>
+        <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-white/10 via-blue-300/8 via-slate-300/3 to-transparent opacity-60 transform -rotate-6 scale-125"></div>
+      </div>
+
+      {/* Flowing smoke streams */}
+      <div className="absolute inset-0">
+        {/* Large flowing smoke from right to left */}
+        <div className="absolute top-1/4 right-0 w-[120%] h-[200px] bg-gradient-to-l from-slate-300/20 via-slate-400/8 via-gray-500/4 to-transparent blur-2xl transform -rotate-3 animate-pulse opacity-70"></div>
+        <div className="absolute top-1/2 right-0 w-[130%] h-[300px] bg-gradient-to-l from-blue-200/15 via-slate-300/6 via-gray-400/3 to-transparent blur-3xl transform rotate-2 animate-pulse delay-1000 opacity-60"></div>
+        <div className="absolute bottom-1/4 right-0 w-[110%] h-[250px] bg-gradient-to-l from-white/12 via-slate-200/5 via-gray-300/2 to-transparent blur-2xl transform -rotate-1 animate-pulse delay-2000 opacity-50"></div>
+      </div>
+
+      {/* Particle streams */}
+      <div className="absolute inset-0">
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white/40 rounded-full"
+            style={{
+              right: `${Math.random() * 30}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `drift ${6 + Math.random() * 4}s linear infinite`,
+              animationDelay: `${Math.random() * 3}s`,
+              opacity: 0.3 + Math.random() * 0.4,
+            }}
+          ></div>
+        ))}
+      </div>
+
+      {/* Volumetric light rays */}
+      <div className="absolute inset-0">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute right-0 origin-right opacity-20"
+            style={{
+              top: `${20 + i * 10}%`,
+              width: "150%",
+              height: "2px",
+              background: `linear-gradient(to left, rgba(255,255,255,0.3) 0%, rgba(148,163,184,0.2) 30%, rgba(100,116,139,0.1) 60%, transparent 100%)`,
+              transform: `rotate(${-15 + i * 4}deg)`,
+              filter: "blur(1px)",
+              animation: `shimmer ${
+                4 + Math.random() * 2
+              }s ease-in-out infinite`,
+              animationDelay: `${i * 0.3}s`,
+            }}
+          ></div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Feature Card Component
+interface FeatureCardProps {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  delay?: number;
+  color: string;
+}
+
+const FeatureCard = ({
+  icon: Icon,
+  title,
+  description,
+  delay = 0,
+  color,
+}: FeatureCardProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  return (
+    <div
+      className={`transform transition-all duration-700 ${
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
+    >
+      <div className="group relative bg- backdrop-blur-sm border border-gray-800/50 rounded-2xl p-6 hover:bg-black/60 transition-all duration-500 hover:scale-105 hover:border-gray-700/60">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-gray-800/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+        <div className="relative z-10">
+          <div
+            className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${color} mb-4 group-hover:scale-110 transition-transform duration-300`}
+          >
+            <Icon className="w-7 h-7 text-white" />
+          </div>
+
+          <h4 className="text-xl font-bold text-white mb-2 group-hover:text-gray-300 transition-colors duration-500">
+            {title}
+          </h4>
+
+          <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors duration-500">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Text Animation Component
+interface AnimatedTextProps {
+  children: React.ReactNode;
+  delay?: number;
+}
+
+const AnimatedText = ({ children, delay = 0 }: AnimatedTextProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  return (
+    <div
+      className={`transform transition-all duration-1000 ease-out ${
+        isVisible ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+      }`}
+    >
+      {children}
+    </div>
+  );
+};
+
+// Main About Section Component
+const AboutSection = () => {
+  const [titleVisible, setTitleVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTitleVisible(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const features = [
+    {
+      icon: BrainCircuit,
+      title: "Cognitive AI",
+      description:
+        "Advanced neural networks that think, learn, and evolve with unprecedented intelligence.",
+      color: "from-purple-600 to-pink-600",
+      delay: 400,
+    },
+    {
+      icon: Cpu,
+      title: "Edge Computing",
+      description:
+        "Lightning-fast processing at the edge, bringing AI closer to your data than ever before.",
+      color: "from-blue-600 to-cyan-600",
+      delay: 600,
+    },
+    {
+      icon: ShieldCheck,
+      title: "Quantum Security",
+      description:
+        "Next-generation encryption and privacy protocols that protect your most sensitive information.",
+      color: "from-green-600 to-emerald-600",
+      delay: 800,
+    },
+    {
+      icon: Rocket,
+      title: "Infinite Scale",
+      description:
+        "Seamlessly expand across galaxies of data with our revolutionary scaling architecture.",
+      color: "from-orange-600 to-red-600",
+      delay: 1000,
+    },
+  ];
+
+  return (
+    <section className="relative min-h-screen py-20 overflow-hidden">
+      <AnimatedBackground />
+
+      {/* Add floating animation keyframe */}
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          25% { transform: translate(10px, -10px) rotate(0.5deg); }
+          50% { transform: translate(-5px, -15px) rotate(-0.5deg); }
+          75% { transform: translate(-10px, 5px) rotate(0.5deg); }
+        }
+        
+        @keyframes drift {
+          0% { transform: translateX(0) translateY(0); opacity: 1; }
+          50% { opacity: 0.3; }
+          100% { transform: translateX(-200vw) translateY(-20px); opacity: 0; }
+        }
+        
+        @keyframes shimmer {
+          0%, 100% { opacity: 0.1; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
+
+      <div className="container mx-auto px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-screen">
+          {/* Left Side - Content */}
+          <div className="space-y-8 text-left">
+            {/* Main Title */}
+            <AnimatedText delay={100}>
+              <div className="relative">
+                <h1
+                  className={`text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-200 to-indigo-300 transform transition-all duration-1000 ${
+                    titleVisible
+                      ? "scale-100 opacity-100"
+                      : "scale-95 opacity-0"
+                  }`}
+                >
+                  Tech Solutions
+                </h1>
+                <div className="absolute -top-2 -right-2">
+                  <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
+                </div>
+              </div>
+            </AnimatedText>
+
+            {/* Subtitle */}
+            <AnimatedText delay={300}>
+              <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+                The Future of{" "}
+                <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  Artificial Intelligence
                 </span>
               </h2>
-              <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-                With over a decade of experience in software development, we've helped hundreds of businesses 
-                transform their operations through innovative technology solutions. Our team of expert developers, 
-                designers, and strategists work together to deliver exceptional results.
-              </p>
-            </div>
-            
-            {/* Key points */}
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">Custom Solutions</h3>
-                  <p className="text-slate-600 dark:text-slate-300">Tailored software solutions designed specifically for your business needs</p>
+            </AnimatedText>
+
+            {/* Description */}
+            <AnimatedText delay={500}>
+              <div className="space-y-4">
+                <p className="text-xl text-gray-300 leading-relaxed">
+                  Experience the next evolution of AI technology. Our
+                  revolutionary platform combines quantum computing, neural
+                  networks, and advanced machine learning to create intelligence
+                  that transcends traditional boundaries.
+                </p>
+
+                <div className="flex items-center space-x-2 text-gray-400">
+                  <Zap className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    Powered by Quantum Neural Networks
+                  </span>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">Cutting-edge Technology</h3>
-                  <p className="text-slate-600 dark:text-slate-300">Latest frameworks and technologies to ensure scalability and performance</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <CheckCircle className="h-6 w-6 text-green-500 mt-0.5 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">24/7 Support</h3>
-                  <p className="text-slate-600 dark:text-slate-300">Continuous support and maintenance to keep your systems running smoothly</p>
-                </div>
-              </div>
-            </div>
+            </AnimatedText>
+
+            {/* CTA Button */}
+            <AnimatedText delay={700}>
+              <button className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-bold rounded-full border border-gray-700 overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-900/50 hover:border-gray-600">
+                <span className="relative z-10">Explore Grok AI</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <Rocket className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-500" />
+              </button>
+            </AnimatedText>
           </div>
-          
-          {/* Image */}
-          <div className="relative">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
-              <img
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&h=600&fit=crop"
-                alt="Team collaboration"
-                className="w-full h-full object-cover"
+
+          {/* Right Side - Features Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+                delay={feature.delay}
+                color={feature.color}
               />
-            </div>
-            {/* Floating elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-              <Users className="h-12 w-12 text-white" />
-            </div>
-            <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center shadow-lg">
-              <Award className="h-10 w-10 text-white" />
-            </div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* Bottom glow effect */}
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-32 bg-gradient-to-t from-gray-900/20 to-transparent blur-3xl"></div>
     </section>
-  )
-}
+  );
+};
+
+export default AboutSection;

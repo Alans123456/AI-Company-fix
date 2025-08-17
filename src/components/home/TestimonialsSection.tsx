@@ -1,54 +1,58 @@
-import { useEffect, useState } from "react"
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getTestimonials, Testimonial } from "@/api/testimonials"
-import { useToast } from "@/hooks/useToast"
+import { useEffect, useState } from "react";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getTestimonials, Testimonial } from "@/api/testimonials";
+import { useToast } from "@/hooks/useToast";
 
 export function TestimonialsSection() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        console.log('Fetching testimonials...')
-        const response = await getTestimonials() as { testimonials: Testimonial[] }
-        setTestimonials(response.testimonials)
+        console.log("Fetching testimonials...");
+        const response = (await getTestimonials()) as {
+          testimonials: Testimonial[];
+        };
+        setTestimonials(response.testimonials);
       } catch (error) {
-        console.error('Error fetching testimonials:', error)
+        console.error("Error fetching testimonials:", error);
         toast({
           title: "Error",
           description: "Failed to load testimonials",
           variant: "destructive",
-        })
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchTestimonials()
-  }, [toast])
+    fetchTestimonials();
+  }, [toast]);
 
   useEffect(() => {
     if (testimonials.length > 0) {
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-      }, 5000)
-      return () => clearInterval(interval)
+        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      }, 5000);
+      return () => clearInterval(interval);
     }
-  }, [testimonials.length])
+  }, [testimonials.length]);
 
   const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-  }
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
 
   const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
+    setCurrentIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
+  };
 
   if (loading) {
     return (
@@ -68,37 +72,41 @@ export function TestimonialsSection() {
           </div>
         </div>
       </section>
-    )
+    );
   }
 
   if (testimonials.length === 0) {
-    return null
+    return null;
   }
 
-  const currentTestimonial = testimonials[currentIndex]
+  const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-20 bg-slate-50 dark:bg-slate-900">
+    <section className="py-20 bg-transparent">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
             What Our Clients Say
           </h2>
           <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            Don't just take our word for it - hear from some of our satisfied clients
+            Don't just take our word for it - hear from some of our satisfied
+            clients
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto relative">
-          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+          <Card className="bg-white/80 dark:bg-transparent backdrop-blur-sm border-0 shadow-xl">
             <CardContent className="p-8 md:p-12">
               <div className="text-center">
                 <Quote className="h-12 w-12 text-blue-500 mx-auto mb-6" />
-                
+
                 {/* Stars */}
                 <div className="flex justify-center mb-6">
                   {[...Array(currentTestimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                    <Star
+                      key={i}
+                      className="h-5 w-5 text-yellow-400 fill-current"
+                    />
                   ))}
                 </div>
 
@@ -110,9 +118,15 @@ export function TestimonialsSection() {
                 {/* Client info */}
                 <div className="flex items-center justify-center space-x-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarImage src={currentTestimonial.clientImage} alt={currentTestimonial.clientName} />
+                    <AvatarImage
+                      src={currentTestimonial.clientImage}
+                      alt={currentTestimonial.clientName}
+                    />
                     <AvatarFallback className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-lg">
-                      {currentTestimonial.clientName.split(' ').map(n => n[0]).join('')}
+                      {currentTestimonial.clientName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-left">
@@ -120,7 +134,8 @@ export function TestimonialsSection() {
                       {currentTestimonial.clientName}
                     </div>
                     <div className="text-slate-600 dark:text-slate-400">
-                      {currentTestimonial.clientTitle}, {currentTestimonial.clientCompany}
+                      {currentTestimonial.clientTitle},{" "}
+                      {currentTestimonial.clientCompany}
                     </div>
                   </div>
                 </div>
@@ -153,7 +168,7 @@ export function TestimonialsSection() {
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentIndex ? 'bg-blue-500' : 'bg-slate-300'
+                  index === currentIndex ? "bg-blue-500" : "bg-slate-300"
                 }`}
               />
             ))}
@@ -161,5 +176,5 @@ export function TestimonialsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

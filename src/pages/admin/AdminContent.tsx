@@ -117,7 +117,7 @@ export function AdminContent() {
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
                 Blog Posts
               </CardTitle>
-              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg border border-indigo-400/30">
                 <Plus className="mr-2 h-4 w-4" />
                 New Post
               </Button>
@@ -159,7 +159,7 @@ export function AdminContent() {
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
                 Events
               </CardTitle>
-              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg border border-indigo-400/30">
                 <Plus className="mr-2 h-4 w-4" />
                 New Event
               </Button>
@@ -236,7 +236,7 @@ export function AdminContent() {
               <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
                 Gallery Images
               </CardTitle>
-              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+              <Button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg border border-indigo-400/30">
                 <Plus className="mr-2 h-4 w-4" />
                 Upload Images
               </Button>

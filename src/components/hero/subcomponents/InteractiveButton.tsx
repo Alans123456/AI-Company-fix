@@ -32,7 +32,7 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
 
   const variantClasses =
     variant === "primary"
-      ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:shadow-purple-500/25"
+      ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white border border-indigo-400/30 hover:shadow-indigo-500/25"
       : "bg-black/30 backdrop-blur-xl border border-white/20 text-white hover:bg-black/40 hover:border-white/30";
 
   return (

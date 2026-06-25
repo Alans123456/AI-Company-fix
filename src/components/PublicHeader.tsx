@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Code2, Sun, Moon, Monitor } from "lucide-react";
+import { Bot, Menu, Code2, Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { FloatingGeometry } from "./home/subcomponents/FloatingGeometry";
 import { NeuralNetwork } from "./home/subcomponents/NeuralNetwork";
-import { useTheme } from "./ui/theme-provider"; // <-- Import your theme hook
+import { useTheme } from "./ui/theme-provider";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -18,12 +18,15 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ];
 
-export function PublicHeader() {
+type PublicHeaderProps = {
+  onOpenChat: () => void;
+};
+
+export function PublicHeader({ onOpenChat }: PublicHeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { theme, setTheme } = useTheme();
 
-  // Cycle through "light" → "dark" → "system"
   const toggleTheme = () => {
     if (theme === "light") setTheme("dark");
     else if (theme === "dark") setTheme("system");
@@ -32,24 +35,19 @@ export function PublicHeader() {
 
   return (
     <>
-      {/* Background Animations */}
       <FloatingGeometry />
       <NeuralNetwork />
 
-      <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md border-b border-indigo-500/30">
+      <header className="fixed top-0 z-50 w-full bg-background/60 backdrop-blur-md border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg">
                 <Code2 className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">
-                TechSolutions
-              </span>
+              <span className="text-xl font-bold">AI Solution</span>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {navigation.map((item) => (
                 <Link
@@ -57,8 +55,8 @@ export function PublicHeader() {
                   to={item.href}
                   className={`text-sm font-medium transition-colors ${
                     location.pathname === item.href
-                      ? "text-indigo-400"
-                      : "text-gray-300 hover:text-indigo-400"
+                      ? "text-indigo-500"
+                      : "text-muted-foreground hover:text-indigo-500"
                   }`}
                 >
                   {item.name}
@@ -66,12 +64,22 @@ export function PublicHeader() {
               ))}
             </nav>
 
-            {/* CTA & Theme Toggle */}
             <div className="hidden md:flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-indigo-600/20 hover:text-indigo-300"
+                className="text-muted-foreground hover:bg-indigo-600/20 hover:text-indigo-500"
+                onClick={onOpenChat}
+                title="Open AI Solution chat"
+                aria-label="Open AI Solution chat"
+              >
+                <Bot className="h-5 w-5" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:bg-indigo-600/20 hover:text-indigo-500"
                 onClick={toggleTheme}
                 title={`Switch Theme (Current: ${theme})`}
               >
@@ -87,21 +95,21 @@ export function PublicHeader() {
               </Link>
             </div>
 
-            {/* Mobile Menu */}
             <div className="md:hidden">
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-white hover:bg-indigo-600/20 hover:text-indigo-300"
+                    className="text-muted-foreground hover:bg-indigo-600/20 hover:text-indigo-500"
                   >
                     <Menu className="h-6 w-6" />
                   </Button>
                 </SheetTrigger>
+
                 <SheetContent
                   side="right"
-                  className="w-[300px] sm:w-[400px] bg-gray-900 border-l border-indigo-500/30"
+                  className="w-[300px] sm:w-[400px] bg-background/95 border-l border-border/60"
                 >
                   <div className="flex flex-col space-y-4 mt-8">
                     {navigation.map((item) => (
@@ -111,18 +119,29 @@ export function PublicHeader() {
                         onClick={() => setIsOpen(false)}
                         className={`text-lg font-medium transition-colors ${
                           location.pathname === item.href
-                            ? "text-indigo-400"
-                            : "text-gray-300 hover:text-indigo-400"
+                            ? "text-indigo-500"
+                            : "text-muted-foreground hover:text-indigo-500"
                         }`}
                       >
                         {item.name}
                       </Link>
                     ))}
 
-                    {/* Theme Toggle in Mobile */}
                     <Button
                       variant="outline"
-                      className="w-full text-gray-300 border-indigo-500/30 hover:bg-indigo-600/20 hover:text-indigo-300"
+                      className="w-full text-muted-foreground border-indigo-500/30 hover:bg-indigo-600/20 hover:text-indigo-500"
+                      onClick={() => {
+                        onOpenChat();
+                        setIsOpen(false);
+                      }}
+                    >
+                      <Bot className="h-5 w-5 mr-2" />
+                      Chat with AI Solution
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="w-full text-muted-foreground border-indigo-500/30 hover:bg-indigo-600/20 hover:text-indigo-500"
                       onClick={() => {
                         toggleTheme();
                         setIsOpen(false);

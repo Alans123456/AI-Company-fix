@@ -35,7 +35,7 @@ export function ProjectsSection() {
 
   if (loading) {
     return (
-      <section className="py-20 bg-transparent">
+      <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-64 mx-auto mb-4 animate-pulse"></div>
@@ -66,7 +66,7 @@ export function ProjectsSection() {
   }
 
   return (
-    <section className="py-20 bg-transparent">
+    <section className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white mb-4">
@@ -82,7 +82,7 @@ export function ProjectsSection() {
           {projects.map((project) => (
             <Card
               key={project._id}
-              className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-0 shadow-lg"
+              className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg"
             >
               <div className="relative overflow-hidden">
                 <img
@@ -92,13 +92,16 @@ export function ProjectsSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    className="bg-white/90 hover:bg-white dark:hover:bg-black/90 text-black dark:text-white shadow-lg"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
+                  <Link to="/projects">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="bg-white/90 hover:bg-white dark:hover:bg-black/90 text-black dark:text-white shadow-lg"
+                      aria-label={`View ${project.title} details`}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
               <CardContent className="p-6">
@@ -123,13 +126,15 @@ export function ProjectsSection() {
                     </Badge>
                   ))}
                 </div>
-                <Button
-                  variant="outline"
-                  className="w-full group-hover:bg-blue-50 group-hover:border-blue-200 dark:group-hover:bg-blue-900/50 transition-colors"
-                >
-                  View Details
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <Link to="/projects">
+                  <Button
+                    variant="outline"
+                    className="w-full group-hover:bg-indigo-50 group-hover:border-indigo-200 dark:group-hover:bg-indigo-900/50 transition-colors"
+                  >
+                    View Details
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -139,7 +144,7 @@ export function ProjectsSection() {
           <Link to="/projects">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg border border-indigo-400/30"
             >
               View All Projects
               <ArrowRight className="ml-2 h-5 w-5" />

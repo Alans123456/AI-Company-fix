@@ -50,7 +50,7 @@ export function TestimonialsSection() {
 
   const prevTestimonial = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
     );
   };
 
@@ -95,11 +95,9 @@ export function TestimonialsSection() {
         </div>
 
         <div className="max-w-4xl mx-auto relative">
-          <Card className="bg-white/80 dark:bg-transparent backdrop-blur-sm border-0 shadow-xl">
+          <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
             <CardContent className="p-8 md:p-12">
               <div className="text-center">
-                <Quote className="h-12 w-12 text-blue-500 mx-auto mb-6" />
-
                 {/* Stars */}
                 <div className="flex justify-center mb-6">
                   {[...Array(currentTestimonial.rating)].map((_, i) => (
@@ -148,7 +146,7 @@ export function TestimonialsSection() {
             variant="outline"
             size="icon"
             onClick={prevTestimonial}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-black/80 dark:hover:bg-black backdrop-blur-sm hover:bg-white"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -156,7 +154,7 @@ export function TestimonialsSection() {
             variant="outline"
             size="icon"
             onClick={nextTestimonial}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm hover:bg-white"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 dark:bg-black/80 dark:hover:bg-black backdrop-blur-sm hover:bg-white"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

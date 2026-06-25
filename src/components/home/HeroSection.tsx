@@ -1,6 +1,7 @@
 // src/components/hero/HeroSection.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { ArrowRight, Play, Sparkles, Zap, Rocket } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { AnimatedWaves } from "./subcomponents/AnimatedWaves";
 import { FloatingGeometry } from "./subcomponents/FloatingGeometry";
 import { NeuralNetwork } from "./subcomponents/NeuralNetwork";
@@ -8,21 +9,22 @@ import { InteractiveButton } from "../hero/subcomponents/InteractiveButton";
 
 export const HeroSection: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
   const handleExploreClick = useCallback(() => {
-    console.log("Explore clicked");
-  }, []);
+    navigate("/services");
+  }, [navigate]);
 
   const handleDemoClick = useCallback(() => {
-    console.log("Demo clicked");
-  }, []);
+    navigate("/projects");
+  }, [navigate]);
 
   return (
-    <section className="relative bg-transparent overflow-hidden z-10">
+    <section className="relative  overflow-hidden z-10">
       {/* Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <AnimatedWaves />
@@ -30,14 +32,14 @@ export const HeroSection: React.FC = () => {
         <NeuralNetwork />
 
         {/* Static gradient overlays */}
-        <div className="absolute inset-0 bg-transparent " />
+        <div className="absolute inset-0  " />
       </div>
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 ">
         <div className="text-center max-w-7xl mx-auto">
           <div
-            className={`inline-flex items-center px-6 py-3 rounded-full bg-transparent  border border-white/20 mb-8 transform transition-all duration-1000 ${
+            className={`inline-flex items-center px-6 py-3 rounded-full  border border-black/20 dark:border-white/20 mb-8 transform transition-all duration-1000 ${
               isLoaded
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
@@ -46,13 +48,15 @@ export const HeroSection: React.FC = () => {
             <div className="flex items-center ">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-3 " />
               <Sparkles className="w-6 h-6 text-yellow-400 mr-2" />
-              <span className="text-white font-medium">Tech Solutions</span>
+              <span className="dark:text-white text-gray-700 font-medium">
+                AI Solution
+              </span>
               <Zap className="w-4 h-4 text-blue-400 ml-2 animate-bounce" />
             </div>
           </div>
 
           <h1
-            className={`text-5xl sm:text-7xl lg:text-8xl font-black text-white mb-8 leading-tight transform transition-all duration-1000 delay-300 ${
+            className={`text-5xl sm:text-7xl lg:text-8xl font-black dark:text-white text-gray-700 mb-8 leading-tight transform transition-all duration-1000 delay-300 ${
               isLoaded
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
@@ -65,25 +69,25 @@ export const HeroSection: React.FC = () => {
           </h1>
 
           <p
-            className={`text-lg sm:text-xl lg:text-2xl text-gray-300 mb-16 max-w-4xl mx-auto leading-relaxed font-light transform transition-all duration-1000 delay-500 ${
+            className={`text-lg sm:text-xl lg:text-2xl dark:text-gray-300 text-gray-500 mb-16 max-w-4xl mx-auto leading-relaxed font-light transform transition-all duration-1000 delay-500 ${
               isLoaded
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
             }`}
           >
-            Pioneering the intersection of{" "}
+            We add practical{" "}
             <span className="text-indigo-400 font-semibold">
-              artificial intelligence
+              AI features
             </span>
-            ,{" "}
+            {" "}to the products your team already uses and build{" "}
             <span className="text-purple-400 font-semibold">
-              immersive design
+              complete AI products
             </span>
-            , and{" "}
+            {" "}with{" "}
             <span className="text-pink-400 font-semibold">
-              cutting-edge technology
+              production-ready automation
             </span>{" "}
-            to create extraordinary digital experiences that shape tomorrow.
+            for teams ready to move faster.
           </p>
 
           <div
@@ -123,8 +127,8 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* Gradient overlays (extra decoration) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 pointer-events-none" />
+      <div className="absolute inset-0  pointer-events-none" />
+      <div className="absolute inset-0  pointer-events-none" />
     </section>
   );
 };

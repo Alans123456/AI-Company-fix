@@ -5,7 +5,7 @@ import { MouseAnimationBackground } from "./MouseAnimationBackground";
 
 export function AdminLayout() {
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="relative min-h-screen bg-background text-foreground">
       {/* Global mouse animation background */}
       <MouseAnimationBackground />
 

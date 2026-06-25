@@ -8,6 +8,7 @@ import {
   Zap,
   LucideIcon,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Animated Background Component
 const AnimatedBackground = () => {
@@ -108,10 +109,10 @@ const FeatureCard = ({
           <div
             className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${color} mb-4 group-hover:scale-110 transition-transform duration-300`}
           >
-            <Icon className="w-7 h-7 text-white" />
+            <Icon className="w-7 h-7 text-white " />
           </div>
 
-          <h4 className="text-xl font-bold text-white mb-2 group-hover:text-gray-300 transition-colors duration-500">
+          <h4 className="text-xl font-bold text-gray-500 mb-2 group-hover:text-gray-300 transition-colors duration-500">
             {title}
           </h4>
 
@@ -226,13 +227,13 @@ const AboutSection = () => {
             <AnimatedText delay={100}>
               <div className="relative">
                 <h1
-                  className={`text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-200 to-indigo-300 transform transition-all duration-1000 ${
+                  className={`text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-600 via-blue-200 to-indigo-300 transform transition-all duration-1000 ${
                     titleVisible
                       ? "scale-100 opacity-100"
                       : "scale-95 opacity-0"
                   }`}
                 >
-                  Tech Solutions
+                  AI Solution
                 </h1>
                 <div className="absolute -top-2 -right-2">
                   <Sparkles className="w-8 h-8 text-yellow-400 animate-pulse" />
@@ -242,7 +243,7 @@ const AboutSection = () => {
 
             {/* Subtitle */}
             <AnimatedText delay={300}>
-              <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-500 dark:text-gray-100 leading-tight">
                 The Future of{" "}
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   Artificial Intelligence
@@ -253,17 +254,17 @@ const AboutSection = () => {
             {/* Description */}
             <AnimatedText delay={500}>
               <div className="space-y-4">
-                <p className="text-xl text-gray-300 leading-relaxed">
-                  Experience the next evolution of AI technology. Our
-                  revolutionary platform combines quantum computing, neural
-                  networks, and advanced machine learning to create intelligence
-                  that transcends traditional boundaries.
+                <p className="text-xl text-gray-500 leading-relaxed">
+                  We help companies add AI into products they already depend on
+                  and create complete AI-first products from the ground up. Our
+                  team connects strategy, automation, model integration, and
+                  polished user experience into production-ready solutions.
                 </p>
 
                 <div className="flex items-center space-x-2 text-gray-400">
                   <Zap className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    Powered by Quantum Neural Networks
+                    Practical AI integration and end-to-end AI product delivery
                   </span>
                 </div>
               </div>
@@ -271,11 +272,14 @@ const AboutSection = () => {
 
             {/* CTA Button */}
             <AnimatedText delay={700}>
-              <button className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-bold rounded-full border border-gray-700 overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-gray-900/50 hover:border-gray-600">
-                <span className="relative z-10">Explore Grok AI</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <Link
+                to="/services"
+                className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-full border border-indigo-400/30 overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30 hover:border-indigo-500"
+              >
+                <span className="relative z-10">Explore AI</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-purple-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <Rocket className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-500" />
-              </button>
+              </Link>
             </AnimatedText>
           </div>
 

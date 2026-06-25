@@ -23,7 +23,12 @@ export const AnimatedWaves: React.FC = () => {
     const animate = () => {
       timeRef.current += 0.02;
 
-      ctx.fillStyle = "rgba(0, 0, 0, 0.02)";
+      // Clear frame depending on current theme to keep wave animation visible
+      // in both light and dark mode.
+      const isDark = document.documentElement.classList.contains("dark");
+      ctx.fillStyle = isDark
+        ? "rgba(0, 0, 0, 0.02)"
+        : "rgba(255, 255, 255, 0.02)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw multiple wave layers

@@ -1,62 +1,76 @@
-import { useEffect, useState } from "react"
-import { ExternalLink, Calendar, User, Filter } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { getProjects, Project } from "@/api/projects"
-import { useToast } from "@/hooks/useToast"
+import { useEffect, useState } from "react";
+import { ExternalLink, Calendar, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { getProjects, Project } from "@/api/projects";
+import { useToast } from "@/hooks/useToast";
 
-const industries = ['All', 'E-commerce', 'Healthcare', 'Finance', 'Technology']
+const industries = ["All", "E-commerce", "Healthcare", "Finance", "Technology"]; // Product page cards dark bg matches Home card tone
 
 export function Projects() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
-  const [selectedIndustry, setSelectedIndustry] = useState('All')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        console.log('Fetching projects...')
-        const response = await getProjects() as { projects: Project[] }
-        setProjects(response.projects)
-        setFilteredProjects(response.projects)
+        console.log("Fetching projects...");
+        const response = (await getProjects()) as { projects: Project[] };
+        setProjects(response.projects);
+        setFilteredProjects(response.projects);
       } catch (error) {
-        console.error('Error fetching projects:', error)
+        console.error("Error fetching projects:", error);
         toast({
           title: "Error",
           description: "Failed to load projects",
           variant: "destructive",
-        })
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjects()
-  }, [toast])
+    fetchProjects();
+  }, [toast]);
 
   useEffect(() => {
-    let filtered = projects
+    let filtered = projects;
 
-    if (selectedIndustry !== 'All') {
-      filtered = filtered.filter(project => project.industry === selectedIndustry)
+    if (selectedIndustry !== "All") {
+      filtered = filtered.filter(
+        (project) => project.industry === selectedIndustry,
+      );
     }
 
     if (searchTerm) {
-      filtered = filtered.filter(project =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        project.technologies.some(tech => tech.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
+      filtered = filtered.filter(
+        (project) =>
+          project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          project.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          project.technologies.some((tech) =>
+            tech.toLowerCase().includes(searchTerm.toLowerCase()),
+          ),
+      );
     }
 
-    setFilteredProjects(filtered)
-  }, [selectedIndustry, searchTerm, projects])
+    setFilteredProjects(filtered);
+  }, [selectedIndustry, searchTerm, projects]);
 
   if (loading) {
     return (
@@ -68,22 +82,26 @@ export function Projects() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-xl overflow-hidden animate-pulse">
-                <div className="h-48 bg-slate-200 dark:bg-slate-700"></div>
+              <div
+                key={i}
+                className="bg-white dark:bg-gray-900/60 rounded-xl overflow-hidden animate-pulse"
+              >
+                <div className="h-48 bg-slate-200 dark:bg-gray-800/60"></div>
                 <div className="p-6">
-                  <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                  <div className="h-6 bg-slate-200 dark:bg-gray-800/60 rounded mb-2"></div>
+                  <div className="h-4 bg-slate-200 dark:bg-gray-800/60 rounded mb-4"></div>
                   <div className="flex gap-2 mb-4">
-                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-16"></div>
-                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-20"></div>
+                    <div className="h-6 bg-slate-200 dark:bg-gray-800/60 rounded w-16"></div>
+                    <div className="h-6 bg-slate-200 dark:bg-gray-800/60 rounded w-20"></div>
                   </div>
+                  <div className="h-10 bg-slate-200 dark:bg-gray-800/60 rounded"></div>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -95,7 +113,8 @@ export function Projects() {
             Our Projects
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Explore our portfolio of successful projects and see how we've helped businesses transform through technology
+            Explore our portfolio of successful projects and see how we've
+            helped businesses transform through technology
           </p>
         </div>
 
@@ -115,7 +134,11 @@ export function Projects() {
                 key={industry}
                 variant={selectedIndustry === industry ? "default" : "outline"}
                 onClick={() => setSelectedIndustry(industry)}
-                className={selectedIndustry === industry ? "bg-gradient-to-r from-blue-600 to-indigo-600" : ""}
+                className={
+                  selectedIndustry === industry
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-600"
+                    : ""
+                }
               >
                 {industry}
               </Button>
@@ -126,7 +149,10 @@ export function Projects() {
         {/* Projects grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => (
-            <Card key={project._id} className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+            <Card
+              key={project._id}
+              className="group overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg"
+            >
               <div className="relative overflow-hidden">
                 <img
                   src={project.images[0]}
@@ -137,13 +163,19 @@ export function Projects() {
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button size="sm" variant="secondary" className="bg-white/90 hover:bg-white">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="bg-white/90 hover:bg-white"
+                      >
                         <ExternalLink className="h-4 w-4" />
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-4xl bg-white dark:bg-slate-800 max-h-[90vh] overflow-y-auto">
                       <DialogHeader>
-                        <DialogTitle className="text-2xl">{project.title}</DialogTitle>
+                        <DialogTitle className="text-2xl">
+                          {project.title}
+                        </DialogTitle>
                         <DialogDescription className="text-base">
                           {project.description}
                         </DialogDescription>
@@ -161,16 +193,26 @@ export function Projects() {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Challenge</h4>
-                            <p className="text-slate-600 dark:text-slate-300">{project.challenge}</p>
+                            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                              Challenge
+                            </h4>
+                            <p className="text-slate-600 dark:text-slate-300">
+                              {project.challenge}
+                            </p>
                           </div>
                           <div>
-                            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Solution</h4>
-                            <p className="text-slate-600 dark:text-slate-300">{project.solution}</p>
+                            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                              Solution
+                            </h4>
+                            <p className="text-slate-600 dark:text-slate-300">
+                              {project.solution}
+                            </p>
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Technologies Used</h4>
+                          <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                            Technologies Used
+                          </h4>
                           <div className="flex flex-wrap gap-2">
                             {project.technologies.map((tech) => (
                               <Badge key={tech} variant="outline">
@@ -181,9 +223,15 @@ export function Projects() {
                         </div>
                         {project.testimonial && (
                           <div className="bg-slate-50 dark:bg-slate-700 p-4 rounded-lg">
-                            <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Client Testimonial</h4>
-                            <p className="text-slate-600 dark:text-slate-300 italic">"{project.testimonial}"</p>
-                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">- {project.client}</p>
+                            <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
+                              Client Testimonial
+                            </h4>
+                            <p className="text-slate-600 dark:text-slate-300 italic">
+                              "{project.testimonial}"
+                            </p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
+                              - {project.client}
+                            </p>
                           </div>
                         )}
                       </div>
@@ -196,7 +244,10 @@ export function Projects() {
                   <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                     {project.title}
                   </h3>
-                  <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-100 text-blue-800"
+                  >
                     {project.industry}
                   </Badge>
                 </div>
@@ -210,7 +261,9 @@ export function Projects() {
                   </div>
                   <div className="flex items-center space-x-1">
                     <Calendar className="h-4 w-4" />
-                    <span>{new Date(project.completedDate).toLocaleDateString()}</span>
+                    <span>
+                      {new Date(project.completedDate).toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -239,5 +292,5 @@ export function Projects() {
         )}
       </div>
     </div>
-  )
+  );
 }

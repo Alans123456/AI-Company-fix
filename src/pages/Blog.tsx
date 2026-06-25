@@ -1,69 +1,78 @@
-import { useEffect, useState } from "react"
-import { Calendar, Clock, User, Search, Tag } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Link } from "react-router-dom"
-import { getBlogPosts, BlogPost } from "@/api/blog"
-import { useToast } from "@/hooks/useToast"
+import { useEffect, useState } from "react";
+import { Calendar, Clock, User, Search, Tag } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
+import { getBlogPosts, BlogPost } from "@/api/blog";
+import { useToast } from "@/hooks/useToast";
 
-const categories = ['All', 'Technology', 'Cloud Computing', 'Mobile Development', 'AI/ML']
+const categories = [
+  "All",
+  "Technology",
+  "Cloud Computing",
+  "Mobile Development",
+  "AI/ML",
+];
 
 export function Blog() {
-  const [posts, setPosts] = useState<BlogPost[]>([])
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
-  const [selectedCategory, setSelectedCategory] = useState('All')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [loading, setLoading] = useState(true)
-  const { toast } = useToast()
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        console.log('Fetching blog posts...')
-        const response = await getBlogPosts() as { posts: BlogPost[] }
-        setPosts(response.posts)
-        setFilteredPosts(response.posts)
+        console.log("Fetching blog posts...");
+        const response = (await getBlogPosts()) as { posts: BlogPost[] };
+        setPosts(response.posts);
+        setFilteredPosts(response.posts);
       } catch (error) {
-        console.error('Error fetching blog posts:', error)
+        console.error("Error fetching blog posts:", error);
         toast({
           title: "Error",
           description: "Failed to load blog posts",
           variant: "destructive",
-        })
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchPosts()
-  }, [toast])
+    fetchPosts();
+  }, [toast]);
 
   useEffect(() => {
-    let filtered = posts
+    let filtered = posts;
 
-    if (selectedCategory !== 'All') {
-      filtered = filtered.filter(post => post.category === selectedCategory)
+    if (selectedCategory !== "All") {
+      filtered = filtered.filter((post) => post.category === selectedCategory);
     }
 
     if (searchTerm) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
+      filtered = filtered.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase()),
+          ),
+      );
     }
 
-    setFilteredPosts(filtered)
-  }, [selectedCategory, searchTerm, posts])
+    setFilteredPosts(filtered);
+  }, [selectedCategory, searchTerm, posts]);
 
-  const featuredPost = posts.find(post => post.featured)
-  const regularPosts = filteredPosts.filter(post => !post.featured)
+  const featuredPost = posts.find((post) => post.featured);
+  const regularPosts = filteredPosts.filter((post) => !post.featured);
 
   if (loading) {
     return (
-      <div className="min-h-screen py-20">
+      <div className="min-h-screen py-20 ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="h-12 bg-slate-200 dark:bg-slate-700 rounded w-96 mx-auto mb-4 animate-pulse"></div>
@@ -74,26 +83,29 @@ export function Blog() {
               <div className="h-96 bg-slate-200 dark:bg-slate-700 rounded-xl mb-8 animate-pulse"></div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-slate-800 rounded-xl p-6 animate-pulse">
-                    <div className="h-48 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
-                    <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded mb-2"></div>
-                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                  <div
+                    key={i}
+                    className="bg-white dark:bg-gray-900/60 rounded-xl p-6 animate-pulse"
+                  >
+                    <div className="h-48 bg-slate-200 dark:bg-gray-800/60 rounded mb-4" />
+                    <div className="h-6 bg-slate-200 dark:bg-gray-800/60 rounded mb-2" />
+                    <div className="h-4 bg-slate-200 dark:bg-gray-800/60 rounded" />
                   </div>
                 ))}
               </div>
             </div>
             <div className="space-y-6">
-              <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse"></div>
-              <div className="h-48 bg-slate-200 dark:bg-slate-700 rounded-xl animate-pulse"></div>
+              <div className="h-64 bg-slate-200 dark:bg-gray-800/60 rounded-xl animate-pulse"></div>
+              <div className="h-48 bg-slate-200 dark:bg-gray-800/60 rounded-xl animate-pulse"></div>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="min-h-screen py-20">
+    <div className="min-h-screen py-20 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -101,7 +113,8 @@ export function Blog() {
             Our Blog
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Stay updated with the latest trends, insights, and best practices in software development
+            Stay updated with the latest trends, insights, and best practices in
+            software development
           </p>
         </div>
 
@@ -110,7 +123,7 @@ export function Blog() {
           <div className="lg:col-span-2">
             {/* Featured post */}
             {featuredPost && (
-              <Card className="mb-12 overflow-hidden bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="mb-12 overflow-hidden bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-xl">
                 <div className="relative">
                   <img
                     src={featuredPost.featuredImage}
@@ -131,7 +144,11 @@ export function Blog() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-4 w-4" />
-                      <span>{new Date(featuredPost.publishDate).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(
+                          featuredPost.publishDate,
+                        ).toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />
@@ -165,7 +182,10 @@ export function Blog() {
             {/* Regular posts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {regularPosts.map((post) => (
-                <Card key={post._id} className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+                <Card
+                  key={post._id}
+                  className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg overflow-hidden"
+                >
                   <div className="relative">
                     <img
                       src={post.featuredImage}
@@ -196,7 +216,11 @@ export function Blog() {
                     <div className="flex items-center justify-between">
                       <div className="flex flex-wrap gap-1">
                         {post.tags.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs">
+                          <Badge
+                            key={tag}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {tag}
                           </Badge>
                         ))}
@@ -216,7 +240,7 @@ export function Blog() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Search */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg">
               <CardHeader>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
                   <Search className="h-5 w-5 mr-2" />
@@ -233,7 +257,7 @@ export function Blog() {
             </Card>
 
             {/* Categories */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg">
               <CardHeader>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   Categories
@@ -244,9 +268,13 @@ export function Blog() {
                   {categories.map((category) => (
                     <Button
                       key={category}
-                      variant={selectedCategory === category ? "default" : "ghost"}
+                      variant={
+                        selectedCategory === category ? "default" : "ghost"
+                      }
                       className={`w-full justify-start ${
-                        selectedCategory === category ? "bg-gradient-to-r from-blue-600 to-indigo-600" : ""
+                        selectedCategory === category
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600"
+                          : ""
                       }`}
                       onClick={() => setSelectedCategory(category)}
                     >
@@ -258,7 +286,7 @@ export function Blog() {
             </Card>
 
             {/* Recent posts */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg">
               <CardHeader>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   Recent Posts
@@ -267,7 +295,11 @@ export function Blog() {
               <CardContent>
                 <div className="space-y-4">
                   {posts.slice(0, 3).map((post) => (
-                    <Link key={post._id} to={`/blog/${post._id}`} className="block group">
+                    <Link
+                      key={post._id}
+                      to={`/blog/${post._id}`}
+                      className="block group"
+                    >
                       <div className="flex space-x-3">
                         <img
                           src={post.featuredImage}
@@ -290,7 +322,7 @@ export function Blog() {
             </Card>
 
             {/* Popular tags */}
-            <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
+            <Card className="bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm border-0 shadow-lg">
               <CardHeader>
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center">
                   <Tag className="h-5 w-5 mr-2" />
@@ -299,16 +331,18 @@ export function Blog() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {Array.from(new Set(posts.flatMap(post => post.tags))).slice(0, 10).map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="outline"
-                      className="cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
-                      onClick={() => setSearchTerm(tag)}
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
+                  {Array.from(new Set(posts.flatMap((post) => post.tags)))
+                    .slice(0, 10)
+                    .map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                        onClick={() => setSearchTerm(tag)}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
                 </div>
               </CardContent>
             </Card>
@@ -316,5 +350,5 @@ export function Blog() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -91,7 +91,7 @@ export function ServicesSection() {
             return (
               <Card
                 key={service._id}
-                className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-transparent backdrop-blur-sm border-0 shadow-lg"
+                className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-lg"
               >
                 <CardHeader className="text-center">
                   <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -105,13 +105,15 @@ export function ServicesSection() {
                   <CardDescription className="text-slate-600 dark:text-slate-300 mb-4">
                     {service.description}
                   </CardDescription>
-                  <Button
-                    variant="outline"
-                    className="group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  <Link to="/services">
+                    <Button
+                      variant="outline"
+                      className="hover:bg-indigo-50 dark:hover:bg-indigo-900/50 border-indigo-500/20 hover:border-indigo-500/40 transition-colors hover:shadow-md"
+                    >
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             );
@@ -122,7 +124,7 @@ export function ServicesSection() {
           <Link to="/services">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg border border-indigo-400/30"
             >
               View All Services
               <ArrowRight className="ml-2 h-5 w-5" />

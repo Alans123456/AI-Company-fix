@@ -5,7 +5,7 @@ import { MouseAnimationBackground } from "./MouseAnimationBackground";
 
 export function Layout() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-background to-secondary">
+    <div className="relative min-h-screen bg-background text-foreground">
       {/* Global mouse animation background */}
       <MouseAnimationBackground />
 
